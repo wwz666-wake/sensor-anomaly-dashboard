@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.pytest_cache/
+.streamlit/secrets.toml
+.DS_Store
+
+# 数据由 data_gen.py 生成，不提交大 CSV
+data/*.csv
+
+# 截图需要提交，其余图片忽略
+*.png
+*.jpg
+!docs/*.png
+!docs/*.jpg

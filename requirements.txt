@@ -1,0 +1,15 @@
+# 核心检测（data_gen.py / detect.py / tests）只需 numpy + pandas
+numpy>=1.26
+pandas>=2.0
+
+# REST API（api.py）
+fastapi>=0.110
+uvicorn>=0.29
+
+# Web 看板（app.py）
+streamlit>=1.45
+altair>=5.2
+
+# 测试与 API 测试
+pytest>=8.0
+httpx>=0.27
