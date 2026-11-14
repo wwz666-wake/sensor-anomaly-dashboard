@@ -1,5 +1,7 @@
 # 工业传感器时序异常检测看板
 
+> 二期进行中 · 2026.11 – 至今（预计 2026.12 完成）
+
 一个面向工业设备时序数据的轻量异常检测项目：生成模拟传感器读数，用**两级检测**识别尖峰、缓慢漂移、断连三类故障，并通过 REST API 与 Web 看板输出可解释的告警区间。
 
 数据为程序生成的模拟数据，**不含任何真实企业信息或密钥**，可安全公开。
@@ -101,43 +103,21 @@ sigma = 1.4826 × MAD(diff(x))
 
 对 `z ∈ [3.0, 5.0]`、`k ∈ [3.5, 6.0]` 共 30 组参数做网格搜索，最优组合 `z = 3.0, k = 5.0` 的 F1 为 0.8578，与默认组合仅差 0.0026。最终仍选 `z = 4.0`：工业场景误报会带来无效停机排查，4σ 是更保守也更好解释的取值。看板侧栏可以实时拖动这两个阈值复现该结论。
 
-## 简历写法参考
+## 当前状态
 
-```
-工业传感器时序异常检测看板 | 2026.11 | Python / NumPy / pandas / FastAPI / Streamlit / pytest | GitHub 链接
-· 独立实现两级异常检测：滑动窗口中位数 + MAD 稳健 z 分数识别尖峰与断连，
-  8 小时窗口中位数相对基线的偏移识别缓慢漂移，检出 27 段告警区间
-· 在 34,560 条读数上完成评估，精确率 0.9651、召回率 0.7679、F1 0.8552、误报率 0.0016；
-  通过 30 组参数网格搜索确定阈值并说明误报成本取舍
-· 用 FastAPI 封装 4 个 REST 接口，Streamlit + Altair 实现时序曲线、异常标注与告警表；
-  编写 12 项单元测试覆盖三类故障与边界条件，配套可复现 README、.gitignore 与效果图
-```
+| 阶段 | 内容 | 状态 |
+|---|---|---|
+| 一期 | 模拟数据生成、两级检测、REST 接口、Web 看板、单元测试与指标评估 | 已完成 |
+| 二期 | 阈值敏感性实验、公开数据集对照、线上 Demo 部署 | 进行中 |
+| 三期 | 与真实设备时序数据对接、异步告警 | 计划中 |
 
-数字请根据自己实际运行结果填写，别直接照抄——面试会问这些数怎么来的。
+一期核心链路已可一键复现（见「快速开始」）；二期正在补充更严格的评估对照与可复现实验，预计 2026.12 完成。
 
-## 上传到 GitHub
+## 仓库与复现
 
-```bash
-cd sensor-anomaly-dashboard
-git init
-git add .
-git commit -m "feat: 工业传感器时序异常检测看板"
-```
-
-在 GitHub 网页新建同名仓库（**不要勾选** README / .gitignore / LICENSE，本地已有，勾选会导致冲突），然后：
-
-```bash
-git remote add origin https://github.com/<你的用户名>/sensor-anomaly-dashboard.git
-git branch -M main
-git push -u origin main
-```
-
-几点提醒：
-
-- 2021 年后 GitHub 已不支持账号密码推送，用 **Personal Access Token**（Settings → Developer settings → Personal access tokens，勾选 `repo`）或配置 SSH Key
-- `data/*.csv` 已在 `.gitignore` 中，仓库只提交代码；别人 clone 后跑 `python data_gen.py` 即可复现全部数据
-- 在仓库 About 填一句话描述并加 topics：`python` `fastapi` `streamlit` `time-series` `anomaly-detection` `industrial-iot`
-- 可以免费用 [Streamlit Community Cloud](https://share.streamlit.io) 关联该仓库一键部署，简历里放线上 Demo 链接，筛选者不用装环境就能看到看板
+- GitHub：https://github.com/wwz666-wake/sensor-anomaly-dashboard
+- `data/*.csv` 由脚本生成并已加入 `.gitignore`，clone 后执行 `python data_gen.py` 即可复现全部数据与指标
+- 数据为程序生成的模拟值，不含任何真实企业信息或密钥
 
 ## 可拓展方向
 
